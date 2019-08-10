@@ -1,0 +1,26 @@
+name: ShulkerBlocker
+main: me.ruud.shulkerblocker.ShulkerBlocker
+author: xX4w3s0m3Xx
+version: 0.0.1
+api-version: 1.13
+description: Blocks shulkers from chests.
+permissions:
+  shulkerblocker.*:
+    description: Able to put shulkers in all types of chests.
+    default: false
+    children:
+      shulkerblocker.normal: true
+      shulkerblocker.double: true
+      shulkerblocker.trapped: true
+      shulkerblocker.ender: true
+      shulkerblocker.donkey: true
+  shulkerblocker.normal:
+    description: Able to put shulkers in normal chests.
+  shulkerblocker.double:
+    description: Able to put shulkers in double chests.
+  shulkerblocker.trapped:
+    description: Able to put shulkers in trapped chests.
+  shulkerblocker.ender:
+    description: Able to put shulkers in ender chests.
+  shulkerblocker.donkey:
+    description: Able to put shulkers in donkey chests.
