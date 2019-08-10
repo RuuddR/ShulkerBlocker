@@ -45,7 +45,7 @@ public class ShulkerBlocker extends JavaPlugin implements Listener {
         Inventory clickedInventory = event.getClickedInventory();
         InventoryHolder inventoryHolder = event.getInventory().getHolder();
 
-        if (clickedInventory == player.getInventory() && item.equals("SHULKER_BOX")) {
+        if (clickedInventory == player.getInventory() && item.contains("SHULKER_BOX")) {
             if (inventoryHolder instanceof Chest) {
                 Chest chest = (Chest) inventoryHolder;
                 if (chest.getBlock().getType().toString().equals("CHEST") && !player.hasPermission("shulkerblocker.normal")
