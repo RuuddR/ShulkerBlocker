@@ -2,9 +2,11 @@ package me.ruud.shulkerblocker;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.block.EnderChest;
+import org.bukkit.block.Hopper;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ChestedHorse;
 import org.bukkit.entity.Player;
@@ -12,6 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -34,6 +38,20 @@ public class ShulkerBlocker extends JavaPlugin implements Listener {
 
     }
 
+    @EventHandler
+    public void inventoryPickupEvent(InventoryPickupItemEvent event) {
+        if (event.getInventory().getType() == InventoryType.HOPPER && event.getItem().getItemStack().getType().toString().contains("SHULKER_BOX")) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void hopperMove(InventoryMoveItemEvent e) {
+        if (e.getSource().getType() == InventoryType.HOPPER && e.getItem().getType().toString().contains("SHULKER_BOX")) {
+            e.setCancelled(true);
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
@@ -53,6 +71,11 @@ public class ShulkerBlocker extends JavaPlugin implements Listener {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("message").replaceAll("<CHEST>", chest.getBlock().getType().toString().toLowerCase().replaceAll("_", " "))));
                     event.setCancelled(true);
                 }
+            }
+
+            if (inventoryHolder instanceof Hopper && !player.hasPermission("shulkerblocker.hopper")) {
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("message").replaceAll("<CHEST>", "hopper")));
+                event.setCancelled(true);
             }
 
             if (inventoryHolder instanceof ChestedHorse && !player.hasPermission("shulkerblocker.donkey")) {
